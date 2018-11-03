@@ -6,12 +6,12 @@ For the example we want to create a file in build time, with the value of some s
 
 ## 1 You  need to define the template file with extension ".template" on you code like this:
 ```
----------------------- filename.extension.template ---------------
+---------------------- teste.h.template ---------------
 
 String anyVariable = "TEST_PRIVATE_KEY_REPLACE"
 String anyOtherVariable = "TEST_PRIVATE_KEY_REPLACE2"
 
----------------------- filename.extension.template ---------------
+---------------------- teste.h.template ---------------
 ```
 ## 2 Apply the plugin on gradle:
 ```
