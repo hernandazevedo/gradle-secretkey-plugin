@@ -5,7 +5,8 @@ The gradle-secretkey-plugin is a plugin to create a file based on a template, re
 
 ---------------------- filename.extension.template ---------------
 
-String anyVariable = "REPLACEMENT_STRING"
+String anyVariable = "TEST_PRIVATE_KEY_REPLACE"
+String anyOtherVariable = "TEST_PRIVATE_KEY_REPLACE2"
 
 ---------------------- filename.extension.template ---------------
 
