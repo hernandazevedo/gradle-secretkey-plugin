@@ -1,6 +1,6 @@
 package com.hazevedo
 
 class SecretKeyPluginExtension {
-    String templatefile = "secretkey.template"
+    String templateFile = "secretkey.h.template"
     def keyMap = [:]
 }

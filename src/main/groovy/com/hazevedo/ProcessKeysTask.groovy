@@ -9,10 +9,10 @@ class ProcessKeysTask extends DefaultTask {
     @TaskAction
     def action() {
         try {
-            String templatefile = project.extensions.secretkey.templatefile
+            String templateFile = project.extensions.secretkey.templateFile
             def keyMap = project.extensions.secretkey.keyMap as Map<String, String>
-            println("Generating secretkey file template=${templatefile} ")
-            File template = new File(templatefile)
+            println("Generating secretkey file template=${templateFile} ")
+            File template = new File(templateFile)
             String myFileWithoutTemplateExtension = template.getName().replaceAll(".template","")
             String content = FileUtils.readFileToString(template, "UTF-8")
             keyMap.each {
