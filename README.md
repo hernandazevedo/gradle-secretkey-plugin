@@ -35,4 +35,4 @@ project.tasks.preBuild.dependsOn project.tasks.processKeys
 See the example here: https://github.com/hernandazevedo/gradle-secretkey-plugin-demo
 
 License
-This project is licensed under the MIT License - see the LICENSE.md file for details
+This project is licensed under the MIT License - see the LICENSE file for details
