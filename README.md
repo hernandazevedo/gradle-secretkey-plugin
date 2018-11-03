@@ -1,6 +1,9 @@
 # gradle-secretkey-plugin
 The gradle-secretkey-plugin is a plugin to create a file based on a template, replacing strings as configured for the plugin using a parameter map.
 
+## Getting Started
+For the example we want to create a file in build time, with the value of some strings as parameter, one of them comes from an enviroment variable.
+
 ## 1 You  need to define the template file with extension ".template" on you code like this:
 ```
 ---------------------- filename.extension.template ---------------
@@ -30,3 +33,6 @@ secretkey {
 project.tasks.preBuild.dependsOn project.tasks.processKeys
 ```
 See the example here: https://github.com/hernandazevedo/gradle-secretkey-plugin-demo
+
+License
+This project is licensed under the MIT License - see the LICENSE.md file for details
