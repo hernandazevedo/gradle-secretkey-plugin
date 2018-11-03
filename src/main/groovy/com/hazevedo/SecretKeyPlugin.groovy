@@ -9,7 +9,7 @@ class SecretKeyPlugin implements Plugin<Project> {
 		project.extensions.add("secretkey", SecretKeyPluginExtension)
 
 		// The "right" way
-		project.task("processkeys", type: ProcessKeysTask) {
+		project.task("processKeys", type: ProcessKeysTask) {
 			group = "SecretKeyPlugin"
 			description = "Create myfile.txt in the build directory"
 		}
