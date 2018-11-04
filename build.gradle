@@ -1,7 +1,6 @@
 buildscript {
     ext {
         localProp = new Properties()
-
         if(rootProject.file("local.properties").exists())
             localProp.load(new FileInputStream(rootProject.file("local.properties")))
         groupName = "com.hernandazevedo"

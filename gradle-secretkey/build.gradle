@@ -4,9 +4,10 @@ apply plugin: 'java'
 apply plugin: 'maven-publish'
 
 dependencies {
-    compile gradleApi()
-    compile localGroovy()
-    testCompile gradleTestKit()
+    implementation gradleApi()
+    implementation localGroovy()
+    testImplementation gradleTestKit()
+    testImplementation "junit:junit:4.12"
 }
 
 test {
