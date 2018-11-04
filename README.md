@@ -1,3 +1,4 @@
+[![Build Status](https://app.bitrise.io/app/d38c5d6d11a0ce5b/status.svg?token=mgDtA2dmpvzFBOtTB099_A&branch=master)](https://app.bitrise.io/app/d38c5d6d11a0ce5b)
 # gradle-secretkey-plugin
 The gradle-secretkey-plugin is a plugin to create a file based on a template, replacing strings as configured for the plugin using a parameter map.
 
