@@ -18,6 +18,10 @@ dependencies {
     testCompile gradleTestKit()
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = "2.13"
+}
+
 test {
     // Always run the tests
     outputs.upToDateWhen { false }
