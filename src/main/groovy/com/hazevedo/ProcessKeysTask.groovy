@@ -1,28 +1,29 @@
 package com.hazevedo
 
-import org.apache.commons.io.FileUtils
+import com.hazevedo.impl.ProcessKeysTaskExecutorImpl
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
 class ProcessKeysTask extends DefaultTask {
 
+    ProcessKeysTaskExecutor taskExecutor
+
     @TaskAction
     def action() {
         try {
-            String templateFile = project.extensions.secretkey.templateFile
-            def keyMap = project.extensions.secretkey.keyMap as Map<String, String>
-            println("Generating secretkey file template=${templateFile} ")
-            File template = new File(templateFile)
-            String myFileWithoutTemplateExtension = template.getName().replaceAll(".template","")
-            String content = FileUtils.readFileToString(template, "UTF-8")
-            keyMap.each {
-                content = content.replaceFirst(it.key, it.value)
-            }
-            File destinationFile = new File(template.getParent(), myFileWithoutTemplateExtension)
-            FileUtils.writeStringToFile(destinationFile, content, "UTF-8")
-        } catch (IOException e) {
+            String templateFileName = project.extensions.secretkey.templateFile
+
+            println("Generating secretKeys ${templateFileName}")
+            taskExecutor = new ProcessKeysTaskExecutorImpl(new File(templateFileName))
+
+            //Retrieves the template content filled with the new string values
+            String content = taskExecutor.fillContentWithKeys(project.extensions.secretkey.keyMap)
+
+            //Writes the new file without the .template extension
+            taskExecutor.writeDestinationFile(content)
+        } catch (Exception e) {
             //Simple exception handling, replace with what's necessary for your use case!
-            throw new RuntimeException("Generating file failed", e)
+            throw new RuntimeException("Generating secretKeys failed", e)
         }
     }
 }
