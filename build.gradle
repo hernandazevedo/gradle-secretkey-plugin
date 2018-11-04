@@ -80,13 +80,14 @@ uploadArchives {
     if (project.rootProject.file(fileName).exists()) {
         localProp.load(new FileInputStream(rootProject.file(fileName)))
     }
+    String packageCloudToken = System.env.PACKAGECLOUD_TOKEN != null ? System.env.PACKAGECLOUD_TOKEN : localProp["packageCloudToken"]
     repositories.mavenDeployer {
         pom.groupId = 'com.hazevedo'
         pom.artifactId = 'gradle-secretkey'
         pom.version = '1.0'
         configuration = configurations.deployerJars
         repository(url: "packagecloud+https://packagecloud.io/hernandazevedo/gradle-secretkey") {
-            authentication(password: localProp["packageCloudToken"])
+            authentication(password: packageCloudToken)
         }
     }
 }
