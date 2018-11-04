@@ -16,6 +16,18 @@ String anyOtherVariable = "TEST_PRIVATE_KEY_REPLACE2"
 ```
 ## 2 Apply the plugin on gradle:
 ```
+buildscript {
+
+    repositories {
+        maven {
+            url "https://packagecloud.io/hernandazevedo/gradle-secretkey/maven2"
+        }
+    }
+    dependencies {
+        classpath 'com.hernandazevedo:gradle-secretkey:${currentversion}'
+    }
+}
+
 apply plugin: 'gradle-secretkey'
 ```
 
