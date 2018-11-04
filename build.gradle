@@ -1,7 +1,27 @@
-apply plugin: 'groovy'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
 buildscript {
+    ext {
+        localProp = new Properties()
+        if(rootProject.file("local.properties").exists())
+            localProp.load(new FileInputStream(rootProject.file("local.properties")))
+        groupName = "com.hernandazevedo"
+        pkgVersion = System.env.BITRISE_GIT_TAG != null ? System.env.BITRISE_GIT_TAG.replace("v", "") : "1.0.0"
+        packageCloudToken = System.env.PACKAGECLOUD_TOKEN != null ? System.env.PACKAGECLOUD_TOKEN : localProp["packageCloudToken"]
+    }
+
+    repositories {
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+    }
+
+}
+
+allprojects {
     repositories {
         mavenCentral()
         jcenter()
@@ -10,61 +30,43 @@ buildscript {
             name 'Google'
         }
     }
-}
-
-dependencies {
-    compile gradleApi()
-    compile localGroovy()
-    testCompile gradleTestKit()
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = "2.13"
-}
-
-test {
-    // Always run the tests
-    outputs.upToDateWhen { false }
-
-    // Turn on some console logging
-    testLogging {
-        events "passed", "skipped", "failed"
-        exceptionFormat "full"
-        stackTraceFilters "entryPoint"
+    configurations {
+        deployerJars
     }
 }
 
-// Write the plugin's classpath to a file to share with the tests
-task createClasspathManifest {
-    def outputDir = file("$buildDir/$name")
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
 
-    inputs.files sourceSets.main.runtimeClasspath
-    outputs.dir outputDir
-
-    doLast {
-        outputDir.mkdirs()
-        file("$outputDir/plugin-classpath.txt").text = sourceSets.main.runtimeClasspath.join("\n")
+subprojects {
+    dependencies {
+        deployerJars "io.packagecloud.maven.wagon:maven-packagecloud-wagon:0.0.6"
     }
 }
 
-// Add the classpath file to the test runtime classpath
-dependencies {
-    testRuntime files(createClasspathManifest)
-}
-
-//gradlew publishToMavenLocal
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = 'com.hazevedo'
-            artifactId = 'gradle-secretkey'
-            version = '1.0'
-
-            from components.java
+ext.uploadArtifacts = { artifactId, repo, config ->
+    println("Artifact " + artifactId)
+    println("Package Version " + pkgVersion)
+    repo.mavenDeployer {
+        configuration = config.deployerJars
+        repository(url: "packagecloud+https://packagecloud.io/hernandazevedo/gradle-secretkey") {
+            authentication(password: packageCloudToken)
+        }
+        pom.version = pkgVersion
+        pom.artifactId = artifactId
+        pom.groupId = groupName
+        pom.whenConfigured { pom ->
+            println("Current Dependencies ${pom.dependencies}")
+            pom.dependencies.each { dep ->
+                println("Processing ${dep}")
+                if (dep.getVersion() == "unspecified" && dep.getGroupId() == rootProject.name) {
+                    println("Updating Dependencies")
+                    dep.setGroupId(groupName)
+                    dep.setVersion(pkgVersion)
+                    println("Updated ${dep}")
+                }
+            }
         }
     }
 }
-
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-

@@ -16,13 +16,25 @@ String anyOtherVariable = "TEST_PRIVATE_KEY_REPLACE2"
 ```
 ## 2 Apply the plugin on gradle:
 ```
+buildscript {
+
+    repositories {
+        maven {
+            url "https://packagecloud.io/hernandazevedo/gradle-secretkey/maven2"
+        }
+    }
+    dependencies {
+        classpath 'com.hernandazevedo:gradle-secretkey:${currentversion}'
+    }
+}
+
 apply plugin: 'gradle-secretkey'
 ```
 
 ## 3 Configure the plugin by initializing the variables like: 
 ```
 secretkey {
-    String privateKeyFromEnv = System.env.PRIVATE_KEY2 != null ? System.env.PRIVATE_KEY2 : "default value"
+    def privateKeyFromEnv = System.env.PRIVATE_KEY2 != null ? System.env.PRIVATE_KEY2 : "default value"
     templateFile = "${project.projectDir}/src/main/cpp/teste.h.template"
     keyMap = [TEST_PRIVATE_KEY_REPLACE: "11111", TEST_PRIVATE_KEY_REPLACE2: privateKeyFromEnv]
 }
