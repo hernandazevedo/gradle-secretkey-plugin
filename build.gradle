@@ -1,7 +1,9 @@
 buildscript {
     ext {
         localProp = new Properties()
-        localProp.load(new FileInputStream(rootProject.file("local.properties")))
+
+        if(rootProject.file("local.properties").exists())
+            localProp.load(new FileInputStream(rootProject.file("local.properties")))
         groupName = "com.hernandazevedo"
         pkgVersion = System.env.BITRISE_GIT_TAG != null ? System.env.BITRISE_GIT_TAG.replace("v", "") : "1.0.0"
         packageCloudToken = System.env.PACKAGECLOUD_TOKEN != null ? System.env.PACKAGECLOUD_TOKEN : localProp["packageCloudToken"]
