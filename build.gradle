@@ -48,10 +48,6 @@ dependencies {
     testRuntime files(createClasspathManifest)
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = "2.13"
-}
-
 //gradlew publishToMavenLocal
 publishing {
     publications {
